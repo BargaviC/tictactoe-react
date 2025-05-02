@@ -1,0 +1,8 @@
+.board {
+    display: grid;
+    gap: 0px;
+}
+
+.row {
+    border-spacing: 0;
+}

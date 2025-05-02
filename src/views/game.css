@@ -1,0 +1,69 @@
+.square {
+    aspect-ratio: 1;
+    width: 30%;
+    background-color: transparent;
+    /* align-content: center; */
+    text-align: center;
+    border-radius: 0%;
+    padding: 3px;
+    cursor: pointer;
+    color: transparent;
+    font-size: 2em;
+}
+
+.square:disabled {
+    cursor: not-allowed;
+    color: slategray;
+}
+
+.top-left {
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.top-center {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.top-right {
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.middle-left {
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+.middle-center {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+.middle-right {
+    border-left: 1px solid black;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+.bottom-left {
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+}
+.bottom-center {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+}
+.bottom-right {
+    border-left: 1px solid black;
+    border-top: 1px solid black;
+}
+.square:hover {
+    background-color: #e0e0e0;
+}
+.square:active {
+    background-color: #b0b0b0;
+}
