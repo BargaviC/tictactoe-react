@@ -3,6 +3,7 @@ import Square from "./Square";
 import React from "react";
 import './board.css';
 import GameController from "../controller/GameController";
+import PlayerController from "../controller/PlayerController";
 
 
 type BoardState = {
@@ -26,13 +27,19 @@ class Board extends React.Component<BoardProps, BoardState> {
         'bottom-center',
         'bottom-right']];
     controller: GameController;
+    playerController: PlayerController
+    botPlayer: String;
 
   constructor(props: any) {
     super(props);
     this.controller = new GameController();
+    this.playerController = new PlayerController();
+    this.botPlayer = Math.random() < 0.5 ? 'X' : 'O'; // Randomly assign bot player
     this.state = {
-      xIsNext: true,
+      xIsNext: this.botPlayer !== 'X', // Set the initial player based on botPlayer
       squares: Array(9).fill(null), // Initialize squares with null values
+      gameOver: false, // Initialize game over state
+      gameDraw: false, // Initialize game draw state
     } as BoardState;
   }
 
@@ -47,7 +54,7 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   resetBoard = () => {
     this.setState({
-      xIsNext: true,
+      xIsNext: this.botPlayer !== 'X', // Reset the initial player based on botPlayer
       squares: Array(9).fill(null), // Reset squares to null values
       gameOver: false, // Reset game over state
       gameDraw: false, // Reset game draw state
@@ -65,12 +72,18 @@ class Board extends React.Component<BoardProps, BoardState> {
         gameDraw: true,
       });
     }
+
+    if (this.state.xIsNext && !this.state.gameOver) {
+      const botMove = this.playerController.botPlayerMove(this.state.squares);
+      this.setSquareValue(botMove);
+    }
   }
 
   render(): ReactNode {
     return (
       <div>
         <p> Current Player: {this.state.xIsNext ? 'X' : 'O'} </p>
+        <p> Bot Player: {this.botPlayer} </p>
         {this.state.gameOver && (
           <div>
             <button onClick={this.resetBoard}>Reset</button>
