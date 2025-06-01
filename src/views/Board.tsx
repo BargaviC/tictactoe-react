@@ -7,7 +7,7 @@ import PlayerController from "../controller/PlayerController";
 
 
 type BoardState = {
-  xIsNext: boolean; // Indicates if it's X's turn
+  xIsCurrent: boolean; // Indicates if it's X's turn
   squares: string[]; // Array to hold the values of the squares
   gameOver: boolean; // Indicates if the game is over
   gameDraw: boolean; // Indicates if the game is a draw
@@ -28,15 +28,15 @@ class Board extends React.Component<BoardProps, BoardState> {
         'bottom-right']];
     controller: GameController;
     playerController: PlayerController
-    botPlayer: String;
+    botPlayer: string;
 
   constructor(props: any) {
     super(props);
     this.controller = new GameController();
-    this.playerController = new PlayerController();
     this.botPlayer = Math.random() < 0.5 ? 'X' : 'O'; // Randomly assign bot player
+    this.playerController = new PlayerController(this.botPlayer);
     this.state = {
-      xIsNext: this.botPlayer !== 'X', // Set the initial player based on botPlayer
+      xIsCurrent: this.botPlayer !== 'X', // Set the initial player based on botPlayer
       squares: Array(9).fill(null), // Initialize squares with null values
       gameOver: false, // Initialize game over state
       gameDraw: false, // Initialize game draw state
@@ -45,20 +45,25 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   setSquareValue = (position: number) => {
     const squares = this.state.squares.slice();
-    squares[position] = this.state.xIsNext ? 'X' : 'O';
+    squares[position] = this.state.xIsCurrent ? 'X' : 'O';
     this.setState((prevState) => ({
-        xIsNext: !prevState.xIsNext,
+        xIsCurrent: !prevState.xIsCurrent,
         squares: squares,
     }));
   }
 
   resetBoard = () => {
+    this.botPlayer = Math.random() < 0.5 ? 'X' : 'O'; // Randomly assign bot player
     this.setState({
-      xIsNext: this.botPlayer !== 'X', // Reset the initial player based on botPlayer
+      xIsCurrent: this.botPlayer !== 'X', // Reset the initial player based on botPlayer
       squares: Array(9).fill(null), // Reset squares to null values
       gameOver: false, // Reset game over state
       gameDraw: false, // Reset game draw state
     });
+  }
+
+  isBotMove() {
+    return (this.state.xIsCurrent && this.botPlayer === 'X') || (!this.state.xIsCurrent && this.botPlayer === 'O');
   }
 
   componentDidUpdate() {
@@ -71,9 +76,7 @@ class Board extends React.Component<BoardProps, BoardState> {
         gameOver: true,
         gameDraw: true,
       });
-    }
-
-    if (this.state.xIsNext && !this.state.gameOver) {
+    } else if (this.isBotMove() && !this.state.gameOver) {
       const botMove = this.playerController.botPlayerMove(this.state.squares);
       this.setSquareValue(botMove);
     }
@@ -82,13 +85,13 @@ class Board extends React.Component<BoardProps, BoardState> {
   render(): ReactNode {
     return (
       <div>
-        <p> Current Player: {this.state.xIsNext ? 'X' : 'O'} </p>
+        <p> Current Player: {this.state.xIsCurrent ? 'X' : 'O'} </p>
         <p> Bot Player: {this.botPlayer} </p>
         {this.state.gameOver && (
           <div>
             <button onClick={this.resetBoard}>Reset</button>
             <p>Game Over!</p>
-            <p>{(this.state.gameDraw ? 'It\'s a draw!' : ((this.state.xIsNext ? 'O' : 'X') + ' wins!'))}</p>
+            <p>{(this.state.gameDraw ? 'It\'s a draw!' : ((this.state.xIsCurrent ? 'O' : 'X') + ' wins!'))}</p>
           </div>
         )}
         

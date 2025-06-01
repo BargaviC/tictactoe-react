@@ -13,15 +13,15 @@ class GameController {
         console.log("GameController initialized");
     }
 
-    terminationCondition(board: string[]): boolean {
-        return this.winCondition(board) || this.drawCondition(board);
+    terminationCondition(board: string[], player: string|null = null): boolean {
+        return this.winCondition(board, player) || this.drawCondition(board);
     }
 
-    winCondition(board: string[]): boolean {
+    winCondition(board: string[], player: string|null = null): boolean {
         // Check for winning combinations
         for (const combination of this.winningCombinations) {
             const [a, b, c] = combination;
-            if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+            if (board[a] && board[a] === board[b] && board[a] === board[c] && (player === null || board[a] === player)) {
                 return true;
             }
         }
