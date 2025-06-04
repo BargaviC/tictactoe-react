@@ -59,6 +59,7 @@ class PlayerController {
     }
 
     minimax(board: string[], player: string = 'X'): number {
+        console.log("Running minimax for player:", player);
         const availablePositions = this.validPositions(board);
         const values: {[position: number]: number} = {};
         for (const position of availablePositions) {

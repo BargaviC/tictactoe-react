@@ -34,7 +34,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     super(props);
     this.controller = new GameController();
     this.botPlayer = Math.random() < 0.5 ? 'X' : 'O'; // Randomly assign bot player
-    this.playerController = new PlayerController(this.botPlayer);
+    this.playerController = new PlayerController(this.botPlayer, this.controller);
     this.state = {
       xIsCurrent: this.botPlayer !== 'X', // Set the initial player based on botPlayer
       squares: Array(9).fill(null), // Initialize squares with null values
@@ -54,6 +54,7 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   resetBoard = () => {
     this.botPlayer = Math.random() < 0.5 ? 'X' : 'O'; // Randomly assign bot player
+    this.playerController = new PlayerController(this.botPlayer, this.controller);
     this.setState({
       xIsCurrent: this.botPlayer !== 'X', // Reset the initial player based on botPlayer
       squares: Array(9).fill(null), // Reset squares to null values
@@ -105,6 +106,7 @@ class Board extends React.Component<BoardProps, BoardState> {
                   onClick={this.setSquareValue}
                   squareId={rowIndex * 3 + positionIndex}
                   className={position}
+                  forceDisabled={this.state.gameOver && this.state.squares[rowIndex * 3 + positionIndex] === null}
                 />
               ))}
             </div>
