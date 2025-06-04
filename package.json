@@ -1,6 +1,6 @@
 {
-  "name": "infinite-tic-tac-toe",
-  "homepage": "https://bargavic.github.io/infinite-tic-tac-toe",
+  "name": "tictactoe-react",
+  "homepage": "https://bargavic.github.io/tictactoe-react",
   "private": true,
   "version": "0.0.0",
   "type": "module",
